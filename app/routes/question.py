@@ -21,19 +21,13 @@ async def CreateQuestion(
 
 
 @router.get("/{form_id}/question", response_model=QuestionsResponse)
-async def GetQuestionsForForm(
-    form_id: str, user: UserResponse = Depends(AuthService.get_authenticated_user)
-):
-    return await QuestionService.get_form_questions(form_id, user)
+async def GetQuestionsForForm(form_id: str):
+    return await QuestionService.get_form_questions(form_id)
 
 
 @router.get("/{form_id}/question/{question_id}", response_model=QuestionResponse)
-async def GetQuestion(
-    form_id: str,
-    question_id: str,
-    user: UserResponse = Depends(AuthService.get_authenticated_user),
-):
-    return await QuestionService.get_question(form_id, question_id, user)
+async def GetQuestion(form_id: str, question_id: str):
+    return await QuestionService.get_question(form_id, question_id)
 
 
 @router.patch("/{form_id}/question/{question_id}", response_model=QuestionResponse)

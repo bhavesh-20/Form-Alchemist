@@ -12,7 +12,7 @@ class QuestionService:
     async def create_question(
         cls, form_id: str, question_metadata: QuestionMetadata, user: UserResponse
     ):
-        form = await FormService.get_form(form_id, user)
+        form = await FormService.get_user_form(form_id, user)
         question = await db.execute(
             insert(Question).values(
                 form_id=form.id,
@@ -23,16 +23,16 @@ class QuestionService:
         return {"message": "Question created successfully", "question_id": question}
 
     @classmethod
-    async def get_form_questions(cls, form_id: str, user: UserResponse):
-        form = await FormService.get_form(form_id, user)
+    async def get_form_questions(cls, form_id: str):
+        form = await FormService.get_form(form_id)
         questions = await db.fetch_all(
             select([Question]).where(Question.form_id == form.id)
         )
         return {"questions": questions}
 
     @classmethod
-    async def get_question(cls, form_id: str, question_id: str, user: UserResponse):
-        form = await FormService.get_form(form_id, user)
+    async def get_question(cls, form_id: str, question_id: str):
+        form = await FormService.get_form(form_id)
         question = await db.fetch_one(
             select([Question]).where(
                 Question.id == question_id, Question.form_id == form.id
@@ -50,11 +50,10 @@ class QuestionService:
         question_metadata: QuestionMetadata,
         user: UserResponse,
     ):
-        form = await FormService.get_form(form_id, user)
-        question = await cls.get_question(form_id, question_id, user)
+        form = await FormService.get_user_form(form_id, user)
         await db.execute(
             update(Question)
-            .where(Question.id == question.id, Question.form_id == form.id)
+            .where(Question.id == question_id, Question.form_id == form.id)
             .values(
                 question=question_metadata.question,
                 is_required=question_metadata.is_required,
@@ -64,11 +63,10 @@ class QuestionService:
 
     @classmethod
     async def delete_question(cls, form_id: str, question_id: str, user: UserResponse):
-        form = await FormService.get_form(form_id, user)
-        question = await cls.get_question(form_id, question_id, user)
+        form = await FormService.get_user_form(form_id, user)
         await db.execute(
             delete(Question).where(
-                Question.id == question.id, Question.form_id == form.id
+                Question.id == question_id, Question.form_id == form.id
             )
         )
         return {"message": "Question deleted successfully"}
