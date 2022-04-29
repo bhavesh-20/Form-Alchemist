@@ -15,9 +15,7 @@ async def CreateForm(
 
 
 @router.get("/{form_id}", response_model=FormResponse)
-async def GetForm(
-    form_id: str
-):
+async def GetForm(form_id: str):
     return await FormService.get_form(form_id)
 
 

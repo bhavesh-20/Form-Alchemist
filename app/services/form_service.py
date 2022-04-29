@@ -26,12 +26,10 @@ class FormService:
         if not form:
             raise HTTPException(status_code=404, detail="Form not found")
         return form
-    
+
     @classmethod
     async def get_form(cls, form_id: str):
-        form = await db.fetch_one(
-            select([Form]).where(Form.id == form_id)
-        )
+        form = await db.fetch_one(select([Form]).where(Form.id == form_id))
         if not form:
             raise HTTPException(status_code=404, detail="Form not found")
         return form
