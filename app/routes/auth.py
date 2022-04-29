@@ -18,5 +18,5 @@ async def LoginUser(payload: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.post("/user", response_model=UserResponse)
-async def GetUser(user: UserResponse = Depends(AuthService.get_authenticated_user)):
+async def GetUser(user = Depends(AuthService.get_authenticated_user)):
     return user
