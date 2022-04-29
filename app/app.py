@@ -1,11 +1,12 @@
 from fastapi import FastAPI
 from fastapi.openapi.utils import get_openapi
+from fastapi.security import OAuth2PasswordBearer
 
 from .db import Base, db, engine
 
 Base.metadata.create_all(bind=engine)
-
 app = FastAPI()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 
 
 def custom_openapi():

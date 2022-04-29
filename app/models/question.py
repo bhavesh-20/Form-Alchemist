@@ -10,9 +10,9 @@ from app.db import Base
 class Question(Base):
     __tablename__ = "questions"
     id = Column(
-        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+        UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
-    form_id = Column(UUID(as_uuid=True), ForeignKey("forms.id"), nullable=False)
+    form_id = Column(UUID(as_uuid=False), ForeignKey("forms.id"), nullable=False)
     question = Column(String, nullable=False)
     is_required = Column(Boolean, server_default="0")
     created_at = Column(DateTime, server_default=func.now())

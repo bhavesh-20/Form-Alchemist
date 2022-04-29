@@ -12,7 +12,7 @@ class User(Base):
     # id column with server_default uuid4
 
     id = Column(
-        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+        UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
     username = Column(String, unique=True, nullable=False)
     email = Column(String, unique=True, nullable=False)

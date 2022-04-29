@@ -10,9 +10,9 @@ from app.db import Base
 class Response(Base):
     __tablename__ = "responses"
     id = Column(
-        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+        UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
-    form_id = Column(UUID(as_uuid=True), ForeignKey("forms.id"), nullable=False)
+    form_id = Column(UUID(as_uuid=False), ForeignKey("forms.id"), nullable=False)
     updated_at = Column(DateTime, onupdate=func.now())
 
     answers = relationship("Answer", cascade="all, delete", backref="responses")

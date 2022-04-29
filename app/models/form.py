@@ -10,9 +10,9 @@ from app.db import Base
 class Form(Base):
     __tablename__ = "forms"
     id = Column(
-        UUID(as_uuid=True), primary_key=True, server_default=text("gen_random_uuid()")
+        UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
-    owner_id = Column(UUID(as_uuid=True), ForeignKey("users.id"), nullable=False)
+    owner_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
 
     multiple_submissions_allowed = Column(Boolean, server_default="0")
     open_till = Column(DateTime, nullable=False)
