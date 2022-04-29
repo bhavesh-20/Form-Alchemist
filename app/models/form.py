@@ -12,7 +12,9 @@ class Form(Base):
     id = Column(
         UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
-    owner_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
+    owner_id = Column(
+        UUID(as_uuid=False), ForeignKey("users.id", ondelete="CASCADE"), nullable=False
+    )
     title = Column(String, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, server_default=func.now())

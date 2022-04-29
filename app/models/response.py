@@ -12,7 +12,9 @@ class Response(Base):
     id = Column(
         UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
-    form_id = Column(UUID(as_uuid=False), ForeignKey("forms.id"), nullable=False)
+    form_id = Column(
+        UUID(as_uuid=False), ForeignKey("forms.id", ondelete="CASCADE"), nullable=False
+    )
     created_at = Column(DateTime, server_default=func.now())
 
     answers = relationship("Answer", cascade="all, delete", backref="responses")

@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends
 from app.schemas import FormCreateResponse, FormMetadata, FormResponse, UserResponse
 from app.services import AuthService, FormService
 
-router = APIRouter(prefix="/form", tags=["form"])
+router = APIRouter(prefix="/form", tags=["forms"])
 
 
 @router.post("", response_model=FormCreateResponse)

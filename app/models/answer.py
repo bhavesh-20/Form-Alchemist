@@ -12,10 +12,14 @@ class Answer(Base):
         UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
     response_id = Column(
-        UUID(as_uuid=False), ForeignKey("responses.id"), nullable=False
+        UUID(as_uuid=False),
+        ForeignKey("responses.id", ondelete="CASCADE"),
+        nullable=False,
     )
     question_id = Column(
-        UUID(as_uuid=False), ForeignKey("questions.id"), nullable=False
+        UUID(as_uuid=False),
+        ForeignKey("questions.id", ondelete="CASCADE"),
+        nullable=False,
     )
     answer = Column(String, nullable=False, server_default="")
     created_at = Column(DateTime, server_default=func.now())
