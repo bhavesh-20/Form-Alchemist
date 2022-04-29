@@ -1,6 +1,7 @@
 from fastapi import APIRouter, Depends
 
 from app.schemas import (
+    AnswersResponse,
     QuestionMetadata,
     QuestionResponse,
     QuestionsResponse,
@@ -49,3 +50,12 @@ async def DeleteQuestion(
     user: UserResponse = Depends(AuthService.get_authenticated_user),
 ):
     return await QuestionService.delete_question(form_id, question_id, user)
+
+
+@router.get("/{form_id}/question/{question_id}/answers", response_model=AnswersResponse)
+async def GetAnswersForQuestion(
+    form_id: str,
+    question_id: str,
+    user: UserResponse = Depends(AuthService.get_authenticated_user),
+):
+    return await QuestionService.get_answers_for_question(form_id, question_id, user)

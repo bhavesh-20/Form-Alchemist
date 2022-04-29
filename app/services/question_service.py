@@ -2,7 +2,7 @@ from fastapi import HTTPException
 from sqlalchemy.sql.expression import delete, insert, select, update
 
 from app import db
-from app.models import Question
+from app.models import Answer, Question
 from app.schemas import QuestionMetadata, UserResponse
 from app.services import FormService
 
@@ -70,3 +70,16 @@ class QuestionService:
             )
         )
         return {"message": "Question deleted successfully"}
+
+    @classmethod
+    async def get_answers_for_question(
+        cls, form_id: str, question_id: str, user: UserResponse
+    ):
+        form = await FormService.get_user_form(form_id, user)
+        question = await cls.get_question(form_id, question_id)
+
+        answers = await db.fetch_all(
+            select([Answer]).where(Answer.question_id == question.id)
+        )
+        print(answers)
+        return {"question": question.question, "answers": answers}
