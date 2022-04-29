@@ -16,9 +16,9 @@ async def CreateForm(
 
 @router.get("/{form_id}", response_model=FormResponse)
 async def GetForm(
-    form_id: str, user: UserResponse = Depends(AuthService.get_authenticated_user)
+    form_id: str
 ):
-    return await FormService.get_form(form_id, user)
+    return await FormService.get_form(form_id)
 
 
 @router.patch("/{form_id}", response_model=FormResponse)

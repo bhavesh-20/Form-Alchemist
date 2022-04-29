@@ -19,9 +19,18 @@ class FormService:
         return {"message": "Form created successfully", "form_id": form}
 
     @classmethod
-    async def get_form(cls, form_id: str, user: UserResponse):
+    async def get_user_form(cls, form_id: str, user: UserResponse):
         form = await db.fetch_one(
             select([Form]).where(Form.id == form_id, Form.owner_id == user.id)
+        )
+        if not form:
+            raise HTTPException(status_code=404, detail="Form not found")
+        return form
+    
+    @classmethod
+    async def get_form(cls, form_id: str):
+        form = await db.fetch_one(
+            select([Form]).where(Form.id == form_id)
         )
         if not form:
             raise HTTPException(status_code=404, detail="Form not found")
@@ -31,7 +40,7 @@ class FormService:
     async def update_form(
         cls, form_id: str, form_metadata: FormMetadata, user: UserResponse
     ):
-        form = await cls.get_form(form_id, user)
+        form = await cls.get_user_form(form_id, user)
         await db.execute(
             update(Form)
             .where(Form.id == form_id)
@@ -41,6 +50,6 @@ class FormService:
 
     @classmethod
     async def delete_form(cls, form_id: str, user: UserResponse):
-        form = await cls.get_form(form_id, user)
+        form = await cls.get_user_form(form_id, user)
         await db.execute(delete(Form).where(Form.id == form_id))
         return {"message": "Form deleted successfully"}
