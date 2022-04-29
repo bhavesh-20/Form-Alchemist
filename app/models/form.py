@@ -14,7 +14,6 @@ class Form(Base):
     )
     owner_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
 
-    multiple_submissions_allowed = Column(Boolean, server_default="0")
     open_till = Column(DateTime, nullable=False)
     title = Column(String, nullable=False)
     description = Column(String)

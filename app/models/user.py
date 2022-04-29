@@ -22,4 +22,3 @@ class User(Base):
     created_at = Column(DateTime, server_default=func.now())
 
     forms = relationship("Form", cascade="all, delete", backref="users")
-    responses = relationship("Response", cascade="all, delete", backref="users")
