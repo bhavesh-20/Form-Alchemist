@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, ForeignKey, String
+from sqlalchemy import Column, DateTime, ForeignKey, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -13,8 +13,6 @@ class Form(Base):
         UUID(as_uuid=False), primary_key=True, server_default=text("gen_random_uuid()")
     )
     owner_id = Column(UUID(as_uuid=False), ForeignKey("users.id"), nullable=False)
-
-    open_till = Column(DateTime, nullable=False)
     title = Column(String, nullable=False)
     description = Column(String)
     created_at = Column(DateTime, server_default=func.now())
