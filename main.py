@@ -2,7 +2,7 @@ import uvicorn
 
 from app import app
 from app.db import create_all
-from app.routes import auth_router, form_router, question_router
+from app.routes import auth_router, form_router, question_router, response_router
 
 
 @app.get("/")
@@ -13,6 +13,7 @@ async def home():
 app.include_router(auth_router)
 app.include_router(form_router)
 app.include_router(question_router)
+app.include_router(response_router)
 
 if __name__ == "__main__":
     create_all()
