@@ -1,3 +1,4 @@
+import gspread
 from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -10,6 +11,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 scheduler = BackgroundScheduler()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
+spreadsheet_service = gspread.service_account(filename="credentials.json")
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
