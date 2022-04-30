@@ -24,7 +24,7 @@ class QuestionService:
             )
             if not sheets_metadata.column:
                 sheets_metadata = SheetsMetadata(
-                    form_id=form_id, question_column=1, question_id=question_id
+                    form_id=form_id, question_column=2, question_id=question_id
                 )
                 session.add(sheets_metadata)
             else:

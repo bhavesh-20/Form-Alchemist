@@ -14,6 +14,17 @@ class FormService:
         worksheet = spreadsheet.get_worksheet(0)
         worksheet.update_title(title)
         worksheet.resize(rows=15, cols=15)
+        worksheet.update_cell(1, 1, "Mobile Number")
+        worksheet.format("A1:A1", {
+                    "backgroundColor": {"red": 1.0, "green": 1.0, "blue": 1.0},
+                    "horizontalAlignment": "CENTER",
+                    "textFormat": {
+                        "foregroundColor": {"red": 0.0, "green": 0.0, "blue": 0.0},
+                        "fontSize": 12,
+                        "bold": True,
+                    },
+                },)
+        worksheet.columns_auto_resize(0, 15)
 
     @classmethod
     async def create_form(
