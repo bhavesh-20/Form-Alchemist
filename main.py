@@ -1,7 +1,13 @@
 import uvicorn
 
 from app import app, db, scheduler
-from app.routes import auth_router, form_router, question_router, response_router
+from app.routes import (
+    auth_router,
+    form_router,
+    pipeline_router,
+    question_router,
+    response_router,
+)
 from app.triggers import PostResposeSubmitTrigger
 from setup_db import create_all
 
@@ -42,6 +48,7 @@ app.include_router(auth_router)
 app.include_router(form_router)
 app.include_router(question_router)
 app.include_router(response_router)
+app.include_router(pipeline_router)
 
 if __name__ == "__main__":
     create_all()

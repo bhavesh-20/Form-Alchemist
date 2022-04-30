@@ -1,8 +1,11 @@
 from datetime import datetime
 
+from sqlalchemy.sql import select
+
+from app import db
 from app.db import SessionLocal
-from app.models import Job, Pipeline
-from app.schemas import TriggerEnum
+from app.models import Form, Job, Pipeline, Response
+from app.schemas import TriggerEnum, UserResponse
 from app.utils import write_log
 
 from .job_service import JobService
@@ -55,3 +58,45 @@ class PipelineService:
                 pipeline.finished_at = datetime.now()
                 session.commit()
                 write_log(f"Pipeline {pipeline.id} is finished")
+
+    @classmethod
+    async def get_pipeline_by_id(cls, pipeline_id: str, user: UserResponse):
+        pipeline = await db.fetch_all(
+            select([Pipeline, Job])
+            .select_from(Pipeline.__table__.join(Job))
+            .where(Pipeline.id == pipeline_id)
+        )
+        pipelines = await cls.format_pipelines(pipeline)
+        return pipelines[0]
+
+    @classmethod
+    async def get_pipelines(cls, form_id: str, limit: int, user: UserResponse):
+        pipelines = await db.fetch_all(
+            select([Pipeline, Job])
+            .select_from(Pipeline.__table__.join(Job).join(Response).join(Form))
+            .where(Form.id == form_id)
+            .limit(limit)
+        )
+        return await cls.format_pipelines(pipelines)
+
+    @classmethod
+    async def format_pipelines(cls, data):
+        pipelines = {}
+        for record in data:
+            if record.id not in pipelines:
+                pipelines[record.id] = {
+                    "id": record.id,
+                    "status": record.status,
+                    "created_at": record.created_at,
+                    "finished_at": record.finished_at,
+                    "jobs": [],
+                }
+            pipelines[record.id]["jobs"].append(
+                {
+                    "id": record.id_1,
+                    "trigger": record.trigger,
+                    "status": record.status_1,
+                    "created_at": record.created_at_1,
+                }
+            )
+        return [val for _, val in pipelines.items()]
