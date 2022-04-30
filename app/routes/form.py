@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, BackgroundTasks
 
 from app.schemas import FormCreateResponse, FormMetadata, FormResponse, UserResponse
 from app.services import AuthService, FormService
@@ -9,9 +9,10 @@ router = APIRouter(prefix="/form", tags=["forms"])
 @router.post("", response_model=FormCreateResponse)
 async def CreateForm(
     form_metadata: FormMetadata,
+    background_tasks: BackgroundTasks,
     user: UserResponse = Depends(AuthService.get_authenticated_user),
 ):
-    return await FormService.create_form(form_metadata, user)
+    return await FormService.create_form(form_metadata, user, background_tasks)
 
 
 @router.get("/{form_id}", response_model=FormResponse)
@@ -30,6 +31,6 @@ async def UpdateForm(
 
 @router.delete("/{form_id}")
 async def DeleteForm(
-    form_id: str, user: UserResponse = Depends(AuthService.get_authenticated_user)
+    form_id: str, background_tasks: BackgroundTasks, user: UserResponse = Depends(AuthService.get_authenticated_user)
 ):
-    return await FormService.delete_form(form_id, user)
+    return await FormService.delete_form(form_id, user, background_tasks)
