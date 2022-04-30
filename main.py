@@ -1,9 +1,9 @@
 import uvicorn
 
 from app import app, db, scheduler
-from app.db import create_all
 from app.routes import auth_router, form_router, question_router, response_router
 from app.triggers import PostResposeSubmitTrigger
+from setup_db import create_all
 
 
 @app.on_event("startup")
