@@ -71,4 +71,5 @@ class JobService:
                 keys = list(r.keys())
                 values[int(keys[0]) - 1] = r[keys[0]]
             worksheet.append_row(values)
+            worksheet.columns_auto_resize(0, worksheet.col_count)
             write_log(f"Google Sheets updated, Content: {values}")
