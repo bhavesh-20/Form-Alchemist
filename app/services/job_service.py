@@ -10,13 +10,13 @@ from app.utils import write_log
 class JobService:
     @classmethod
     def run_job(cls, job, response_id):
-        if job.trigger == TriggerEnum.RECEIPT_SMS:
-            try:
+        try:
+            if job.trigger == TriggerEnum.RECEIPT_SMS:
                 cls.send_receipt_sms(response_id)
-                job.status = "completed"
-            except Exception as e:
-                write_log(f"Job {job.id} failed with error: {e}")
-                job.status = "failed"
+            job.status = "completed"
+        except Exception as e:
+            write_log(f"Job {job.id} failed with error: {e}")
+            job.status = "failed"
 
     @classmethod
     def send_receipt_sms(cls, response_id):
