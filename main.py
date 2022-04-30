@@ -1,8 +1,36 @@
 import uvicorn
 
-from app import app
+from app import app, db, scheduler
 from app.db import create_all
 from app.routes import auth_router, form_router, question_router, response_router
+from app.triggers import PostResposeSubmitTrigger
+
+
+@app.on_event("startup")
+async def connect():
+    await db.connect()
+    print("Successfully connected to the database")
+
+
+@app.on_event("startup")
+def start_scheduler():
+    scheduler.add_job(
+        func=PostResposeSubmitTrigger.trigger, trigger="interval", seconds=5
+    )
+    scheduler.start()
+    print("Scheduler started")
+
+
+@app.on_event("shutdown")
+async def disconnect():
+    await db.disconnect()
+    print("Successfully disconnected from the database")
+
+
+@app.on_event("shutdown")
+def shutdown_scheduler():
+    scheduler.shutdown(wait=False)
+    print("Scheduler shutdown")
 
 
 @app.get("/")

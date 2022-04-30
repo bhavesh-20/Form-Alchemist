@@ -18,6 +18,11 @@ class ResponseService:
     ):
         form = await FormService.get_form(form_id)
         questions = await QuestionService.get_form_questions(form_id)
+        if "user_mobile_number" not in response_data:
+            raise HTTPException(
+                status_code=400, detail="Missing Response user mobile number"
+            )
+
         for question in questions["questions"]:
             if question.is_required and str(question.id) not in response_data:
                 raise HTTPException(
@@ -25,7 +30,11 @@ class ResponseService:
                     detail="Missing required field: {}".format(question.id),
                 )
 
-        response_id = await db.execute(insert(Response).values(form_id=form_id))
+        response_id = await db.execute(
+            insert(Response).values(
+                form_id=form_id, user_mobile_number=response_data["user_mobile_number"]
+            )
+        )
 
         answers = []
         for question in questions["questions"]:

@@ -1,12 +1,14 @@
+from apscheduler.schedulers.background import BackgroundScheduler
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.openapi.utils import get_openapi
 from fastapi.security import OAuth2PasswordBearer
 
-from .db import Base, db, engine
+from .db import Base, engine
 
 Base.metadata.create_all(bind=engine)
 app = FastAPI()
+scheduler = BackgroundScheduler()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/auth/login")
 app.add_middleware(
     CORSMiddleware,
@@ -34,15 +36,3 @@ def custom_openapi():
 
 
 app.openapi = custom_openapi
-
-
-@app.on_event("startup")
-async def connect():
-    await db.connect()
-    print("Successfully connected to the database")
-
-
-@app.on_event("shutdown")
-async def disconnect():
-    await db.disconnect()
-    print("Successfully disconnected from the database")
