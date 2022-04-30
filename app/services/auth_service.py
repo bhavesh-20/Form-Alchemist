@@ -79,15 +79,6 @@ class AuthService:
         return user
 
     @classmethod
-    async def get_admin_user(cls, user: Depends(get_authenticated_user)):
-        if not user.is_admin:
-            raise HTTPException(
-                status_code=400,
-                detail="User is not admin",
-            )
-        return user
-
-    @classmethod
     async def login_user(cls, payload: OAuth2PasswordRequestForm):
         user = await db.fetch_one(
             select([User]).where(User.username == payload.username)

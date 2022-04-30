@@ -1,4 +1,4 @@
-from sqlalchemy import Boolean, Column, DateTime, String
+from sqlalchemy import Column, DateTime, String
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
@@ -18,7 +18,6 @@ class User(Base):
     email = Column(String, unique=True, nullable=False)
     password = Column(String, nullable=False)
     mobile_number = Column(String, unique=True, nullable=False)
-    is_admin = Column(Boolean, server_default="0")
     created_at = Column(DateTime, server_default=func.now())
 
     forms = relationship("Form", cascade="all, delete", backref="users")
