@@ -34,13 +34,21 @@ class PipelineService:
     def run_pipelines(cls):
         with SessionLocal() as session:
             pipelines = (
-                session.query(Pipeline).filter(Pipeline.status != "finished").all()
+                session.query(Pipeline)
+                .filter(Pipeline.status != "finished")
+                .order_by(Pipeline.created_at.asc())
+                .limit(5)
+                .all()
             )
             for pipeline in pipelines:
                 pipeline.status = "running"
                 session.commit()
                 write_log(f"Pipeline {pipeline.id} is running")
-                jobs = session.query(Job).filter(Job.pipeline_id == pipeline.id, Job.status == "pending").all()
+                jobs = (
+                    session.query(Job)
+                    .filter(Job.pipeline_id == pipeline.id, Job.status == "pending")
+                    .all()
+                )
                 for job in jobs:
                     JobService.run_job(job, str(pipeline.response_id))
                 pipeline.status = "finished"
