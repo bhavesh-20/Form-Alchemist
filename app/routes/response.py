@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.services import AuthService, ResponseService
 
@@ -9,8 +9,11 @@ router = APIRouter(prefix="/form", tags=["response"])
 async def CreateResponse(
     form_id: str,
     response_data: dict[str, str],
+    background_tasks: BackgroundTasks,
 ):
-    return await ResponseService.create_response(form_id, response_data)
+    return await ResponseService.create_response(
+        form_id, response_data, background_tasks
+    )
 
 
 @router.get("/{form_id}/response")

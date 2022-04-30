@@ -4,7 +4,8 @@ from sqlalchemy.sql.expression import delete, insert, select, update
 from app import db
 from app.models import Answer, Question
 from app.schemas import QuestionMetadata, UserResponse
-from app.services import FormService
+
+from .form_service import FormService
 
 
 class QuestionService:

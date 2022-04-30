@@ -1,16 +1,21 @@
-from fastapi import HTTPException
+from fastapi import BackgroundTasks, HTTPException
 from sqlalchemy.sql.expression import insert, select
 from sqlalchemy.sql.functions import func
 
 from app import db
 from app.models import Answer, Question, Response
 from app.schemas import UserResponse
-from app.services import FormService, QuestionService
+
+from .form_service import FormService
+from .pipeline_service import PipelineService
+from .question_service import QuestionService
 
 
 class ResponseService:
     @classmethod
-    async def create_response(cls, form_id: str, response_data: dict):
+    async def create_response(
+        cls, form_id: str, response_data: dict, background_tasks: BackgroundTasks
+    ):
         form = await FormService.get_form(form_id)
         questions = await QuestionService.get_form_questions(form_id)
         for question in questions["questions"]:
@@ -35,6 +40,7 @@ class ResponseService:
                 )
         query = "insert into answers (question_id, answer, response_id) values (:question_id, :answer, :response_id)"
         await db.execute_many(query, values=answers)
+        background_tasks.add_task(PipelineService.create_pipeline, response_id)
         return {
             "message": "Response submitted successfully",
             "response_id": response_id,
