@@ -11,6 +11,8 @@ class SheetsMetadata(Base):
         UUID(as_uuid=False), ForeignKey("forms.id", ondelete="CASCADE"), nullable=False
     )
     question_id = Column(
-        UUID(as_uuid=False), ForeignKey("questions.id", ondelete="CASCADE"), nullable=False
+        UUID(as_uuid=False),
+        ForeignKey("questions.id", ondelete="CASCADE"),
+        nullable=False,
     )
     question_column = Column(Integer, nullable=False)

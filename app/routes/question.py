@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, BackgroundTasks, Depends
 
 from app.schemas import (
     AnswersResponse,
@@ -16,9 +16,12 @@ router = APIRouter(prefix="/form", tags=["questions"])
 async def CreateQuestion(
     form_id: str,
     question_metadata: QuestionMetadata,
+    background_tasks: BackgroundTasks,
     user: UserResponse = Depends(AuthService.get_authenticated_user),
 ):
-    return await QuestionService.create_question(form_id, question_metadata, user)
+    return await QuestionService.create_question(
+        form_id, question_metadata, user, background_tasks
+    )
 
 
 @router.get("/{form_id}/question", response_model=QuestionsResponse)
@@ -36,10 +39,11 @@ async def UpdateQuestion(
     form_id: str,
     question_id: str,
     question_metadata: QuestionMetadata,
+    background_tasks: BackgroundTasks,
     user: UserResponse = Depends(AuthService.get_authenticated_user),
 ):
     return await QuestionService.update_question(
-        form_id, question_id, question_metadata, user
+        form_id, question_id, question_metadata, user, background_tasks
     )
 
 
@@ -47,9 +51,12 @@ async def UpdateQuestion(
 async def DeleteQuestion(
     form_id: str,
     question_id: str,
+    background_tasks: BackgroundTasks,
     user: UserResponse = Depends(AuthService.get_authenticated_user),
 ):
-    return await QuestionService.delete_question(form_id, question_id, user)
+    return await QuestionService.delete_question(
+        form_id, question_id, user, background_tasks
+    )
 
 
 @router.get("/{form_id}/question/{question_id}/answers", response_model=AnswersResponse)
