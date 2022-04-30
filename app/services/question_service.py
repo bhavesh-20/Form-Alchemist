@@ -54,7 +54,7 @@ class QuestionService:
                     },
                 },
             )
-            worksheet.columns_auto_resize(0, worksheet.col_count-1)
+            worksheet.columns_auto_resize(0, worksheet.col_count - 1)
             session.commit()
 
     @classmethod
