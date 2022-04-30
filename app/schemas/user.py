@@ -20,4 +20,3 @@ class UserResponse(BaseModel):
     username: str
     email: str
     mobile_number: str
-    is_admin: bool
