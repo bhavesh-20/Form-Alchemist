@@ -40,7 +40,7 @@ class PipelineService:
                 pipeline.status = "running"
                 session.commit()
                 write_log(f"Pipeline {pipeline.id} is running")
-                jobs = session.query(Job).filter(Job.pipeline_id == pipeline.id).all()
+                jobs = session.query(Job).filter(Job.pipeline_id == pipeline.id, Job.status == "pending").all()
                 for job in jobs:
                     JobService.run_job(job, str(pipeline.response_id))
                 pipeline.status = "finished"
