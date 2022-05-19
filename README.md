@@ -7,7 +7,7 @@ Code Base implementing the Atlan Challenge for summer internship.
 - Add the connection string to env `postgresql://username:password@localhost/atlan`, replacing the username and password with their respective values.
 
 ## CodeBase Setup
-- Download the code using `git clone https://github.com/bhavesh-20/Atlan-Challenge.git`, note that this is private repository and can only be accessed by collaborators.
+- Download the code using `git clone https://github.com/bhavesh-20/Atlan-Challenge.git`
 - **Or** Download the code using the zip file.
 - cd to code-base root directory.
 - Create virtual environment for python.
