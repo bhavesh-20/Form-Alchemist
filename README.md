@@ -4,11 +4,11 @@
 
 ## Database Setup
 - Using PostgreSQL.
-- create a database named atlan using `create database atlan`.
-- Add the connection string to env `postgresql://username:password@localhost/atlan`, replacing the username and password with their respective values.
+- create a database named atlan using `create database forms`.
+- Add the connection string to env `postgresql://username:password@localhost/forms`, replacing the username and password with their respective values.
 
 ## CodeBase Setup
-- Download the code using `git clone https://github.com/bhavesh-20/Atlan-Challenge.git`
+- Download the code using `git clone https://github.com/bhavesh-20/Forms.git`
 - **Or** Download the code using the zip file.
 - cd to code-base root directory.
 - Create virtual environment for python.
@@ -21,7 +21,7 @@ pip install -r requirements.txt
 ```
 - .env file: mention the database connection string and jwt secret token in .env. My .env is as follows
 ```
-DATABASE_URI=postgresql://postgres:bhavesh@localhost/atlan
+DATABASE_URI=postgresql://postgres:bhavesh@localhost/forms
 SECRET_KEY=DX7U8Y2RSELX1SWR1C2SNDB1QBF3K8MJM0322E6FE70BHAJ6PDI9EW3QK3BU01JNGRZK1A422UVA553GC4IJOIQHY2BXSVEYLNMK
 ```
 - create database models. Run `python setup_db.py`. All the tables will be created on using the command.
